@@ -5,6 +5,7 @@ import 'package:cash/widgets/transfers_builder.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,18 +19,21 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    initialization();
     Provider.of<TransferProvider>(context, listen: false).initialize();
+
+  }
+
+  void initialization() async {
+      await Future.delayed(const Duration(milliseconds: 200)).then((value) => FlutterNativeSplash.remove());
+
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    List<Locale> locals = const [Locale('en'), Locale('ru'), Locale('uz')];
-
-    List<String> list = const ['English', 'Russian', 'Uzbek'];
-    String dropdownValue = list.first;
-    final prov =   Provider.of<TransferProvider>(context, listen: false);
+    final prov = Provider.of<TransferProvider>(context, listen: false);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -41,9 +45,7 @@ class _HomePageState extends State<HomePage> {
             ),
             onSelected: (String choice) {
               prov.choiceAction(choice, context);
-              setState(() {
-
-              });
+              setState(() {});
               // choiceAction(choice, context);
             },
             itemBuilder: (BuildContext context) {
